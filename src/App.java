@@ -4,36 +4,40 @@ public class App {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
 
-        double[][] matriz_teste = new double[][] {
-            {2,1,4},
-            {0,2,1},
-            {3,0,5}
-        };
-
-        double[][] matriz_teste2 = new double[][] {
+        Matriz matriz_teste_zero = new Matriz(new double[][] {
             {0}
-        };
+        });
 
-        Matriz m = new Matriz(matriz_teste);
+        Matriz matriz_teste1 = new Matriz(new double[][] {
+            {1,2,3},
+            {0,1,0},
+            {1,0,2}
+        });
 
-        System.out.println(m.determinante);
+        Matriz matriz_teste2 = new Matriz(new double[][] {
+            {-2,4,3},
+            {0,1,0},
+            {1,-2,-1}
+        });
 
-        if(m.determinante == 0) {
-            scanner.close();
-            throw new RuntimeException("Determinante da matriz é zero!");
-        }
+        matriz_teste1.inversa();
 
-        m.inversa();
+        System.out.println(matriz_teste1.determinante);
+        System.out.println(matriz_teste2.determinante);
+        
+
+        //Matriz mZero = new Matriz(matriz_teste_zero);
+
+        Matriz mat_result = new Matriz(matriz_teste1.multiplicaMat(matriz_teste2.matriz));
+        System.out.println(mat_result.determinante);
+
+        System.out.println();
+        mat_result.print();
 
 
         
-        /* 
 
-        System.out.println("det(A) = " + det(matriz_teste));
-
-        if(det(matriz_teste) != 0) {
-
-        }
+        /*
 
         System.out.println("Digite o tamanho da matriz: \n>>");
         int tam_mat = scanner.nextInt();  // User input
@@ -44,13 +48,6 @@ public class App {
             for(int j = 0; j < tam_mat; j++) {
                 System.out.println("Valor de [" + (i + 1) + "][" +(j + 1) + "] \n>>");
                 matriz[i][j] = scanner.nextDouble();
-            }
-        }
-
-        for(int i = 0; i < tam_mat; i++) {
-            for(int j = 0; j < tam_mat; j++) {
-                System.out.println("Valor de [" + (i + 1) + "][" +(j + 1) + "]\n");
-                System.out.println(matriz[i][j]);
             }
         }
 
