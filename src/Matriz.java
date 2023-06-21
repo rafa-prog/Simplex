@@ -8,28 +8,51 @@ public class Matriz {
         this.matriz = matriz;
         determinante = det(matriz);
 
-		identidade = new double[matriz.length][matriz.length + 1];
+		identidade = new double[matriz.length][matriz.length];
 
 		for (int i = 0; i < matriz.length; i++) {
-			for (int j = 0; j < matriz.length; j++) {
-				if(i == j) {
-					identidade[i][j] = 1; 
-				}else {
-					identidade[i][j] = 0;
-				}
-			}
+			identidade[i][i] = 1;
 		}
+
+		inversa = null;
     }
 
 
-	public void print() {
-		for(double[] linha : matriz) {
-			for(double col_linha : linha) {
-				System.out.println(col_linha + ", ");
+	public void print(double[][] test) {
+		for(double[] linha : test) {
+
+			System.out.print("[ ");
+
+			for(double valor : linha) {
+				if (valor >= 0) {
+					System.out.print(" ");
+				}
+				
+				System.out.print(valor + " ");
 			}
+
+			System.out.println("] ");
 		}
+
+		System.out.println();
 	}
 
+	private boolean equals(double[][] matriz1, double[][] matriz2) {
+		if (matriz1.length != matriz2.length) {
+			throw new ArithmeticException("Tamanho diferente entre matrizes!");
+		}
+
+		for (int i = 0; i < matriz1.length; i++) {
+			for (int j = 0; j < matriz1[i].length; j++) {
+				if (matriz1[i][j] != matriz2[i][j]) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+	
     private double det(double[][] matriz) {
 		double[][] mat_temp;
 		double resultado = 0;
@@ -39,10 +62,13 @@ public class Matriz {
 			return resultado;
 		}
 
+		if (matriz.length == 2)
+			return matriz[0][0] * matriz[1][1] - matriz[0][1] * matriz[1][0];
+
 		for (int i = 0; i < matriz.length; i++) {
 			mat_temp = new double[matriz.length - 1][matriz.length - 1];
-			for (int k = 0; k < matriz.length; k++) {
-				for (int j = 1; j < matriz.length; j++) {
+			for (int j = 1; j < matriz.length; j++) {
+				for (int k = 0; k < matriz.length; k++) {
 					if (k < i) {
 						mat_temp[j - 1][k] = matriz[j][k];
 					}else if (k > i) {
@@ -56,17 +82,17 @@ public class Matriz {
 		return resultado;
 	}
 
-	public double[][] multiplicaMat(double[][] matriz2) {
-		if(matriz.length != matriz2.length) {
+	public double[][] multiplicaMat(double[][] matriz1, double[][] matriz2) {
+		if (matriz1.length != matriz2.length) {
 			throw new ArithmeticException("Tamanho diferente entre matrizes!");
 		}
 
-		double[][] mat_result = new double[matriz.length][matriz.length];
+		double[][] mat_result = new double[matriz1.length][matriz1.length];
 		
-		for (int i = 0; i < matriz.length; i++) {
-			for (int k = 0; k < matriz.length; k++) {
-				for (int j = 0; j < matriz.length; j++) {
-					mat_result[i][j] += matriz[i][k] * matriz2[k][j];
+		for (int i = 0; i < matriz1.length; i++) {
+			for (int k = 0; k < matriz1.length; k++) {
+				for (int j = 0; j < matriz1.length; j++) {
+					mat_result[i][j] += matriz1[i][k] * matriz2[k][j];
 				}
 			}
 		}
@@ -74,31 +100,30 @@ public class Matriz {
 		return mat_result;
 	}
 
-	public boolean equals(double[][] matriz2) {
-		for (int i = 0; i < matriz.length; i++) {
-			for (int j = 0; j < matriz[i].length; j++) {
-				if(matriz[i][j] != matriz2[i][j]) {
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
-    public double inversa() {
-		if(determinante == 0) {
+    public double[][] inverter(double[][] teste) {
+		System.out.println("det? " + determinante);
+		if (determinante == 0) {
             throw new ArithmeticException("Matriz singular!");
         }
 
-		System.out.println("teste");
+		inversa = new double[matriz.length][matriz.length];
 
-		if(equals(identidade)) {
+		int it = 5;
 
-		}else {
+		double[][] mult;
 
+		mult = multiplicaMat(matriz, teste);
+
+		while (true && it > 0) {
+			if (equals(mult, identidade)) {
+				System.out.println("deu boa");
+				break;
+			}else {
+				System.out.println("deu ruim");
+				it--;
+			}
 		}
 
-        return 0;
+		return inversa;
     }
 }

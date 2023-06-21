@@ -20,22 +20,17 @@ public class App {
             {1,-2,-1}
         });
 
-        matriz_teste1.inversa();
+        Matriz matriz_teste_ident = new Matriz(new double[][] {
+            {1,0,0},
+            {0,1,0},
+            {0,0,1}
+        });
 
-        System.out.println(matriz_teste1.determinante);
-        System.out.println(matriz_teste2.determinante);
-        
+        matriz_teste1.inverter(matriz_teste2.matriz);
+
+        System.out.println("a" + matriz_teste1.determinante);
 
         //Matriz mZero = new Matriz(matriz_teste_zero);
-
-        Matriz mat_result = new Matriz(matriz_teste1.multiplicaMat(matriz_teste2.matriz));
-        System.out.println(mat_result.determinante);
-
-        System.out.println();
-        mat_result.print();
-
-
-        
 
         /*
 
