@@ -102,7 +102,29 @@ public class Matriz {
 	}
 
 	public void decompLU(double[][] matriz) {
-		 
+		l = new double[matriz.length][matriz.length];
+		u = new double[matriz.length][matriz.length];
+
+        for (int i = 0; i < matriz.length; i++) {
+            l[i][i] = 1;
+			
+			for (int j = 0; j < matriz.length; j++) {
+				for (int k = 0; k < matriz.length; k++) {
+					if (i == 0) {
+						u[i][j] = matriz[i][j];
+					}
+
+					if (j == 0) {
+						
+					}
+					
+				}
+			}
+        }
+
+		print(l);
+		print(u);
+		print(multiplicaMat(l, u));
 	}
 
     public double[][] inverteMat(double[][] teste) {

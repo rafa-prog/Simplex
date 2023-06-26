@@ -26,11 +26,7 @@ public class App {
             {0,0,1}
         });
 
-        matriz_teste2.print(matriz_teste2.matriz);
-
-        System.out.println(
-        matriz_teste2.determinante);
-
+        matriz_teste2.decompLU(matriz_teste2.matriz);
         //Matriz mZero = new Matriz(matriz_teste_zero);
 
         /*
