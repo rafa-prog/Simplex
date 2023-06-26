@@ -3,6 +3,7 @@ public class Matriz {
     double[][] matriz;
 	double[][] inversa;
     double[][] identidade;
+	double[][] l, u;
 
     public Matriz(double[][] matriz) {
         this.matriz = matriz;
@@ -100,7 +101,11 @@ public class Matriz {
 		return mat_result;
 	}
 
-    public double[][] inverter(double[][] teste) {
+	public void decompLU(double[][] matriz) {
+		 
+	}
+
+    public double[][] inverteMat(double[][] teste) {
 		System.out.println("det? " + determinante);
 		if (determinante == 0) {
             throw new ArithmeticException("Matriz singular!");
@@ -110,18 +115,11 @@ public class Matriz {
 
 		int it = 5;
 
-		double[][] mult;
+		this.inversa = identidade;
 
-		mult = multiplicaMat(matriz, teste);
-
-		while (true && it > 0) {
-			if (equals(mult, identidade)) {
-				System.out.println("deu boa");
-				break;
-			}else {
-				System.out.println("deu ruim");
-				it--;
-			}
+		while (!equals(matriz, identidade) && it > 0) {
+			
+			it--;
 		}
 
 		return inversa;

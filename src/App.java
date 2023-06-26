@@ -15,9 +15,9 @@ public class App {
         });
 
         Matriz matriz_teste2 = new Matriz(new double[][] {
-            {-2,4,3},
-            {0,1,0},
-            {1,-2,-1}
+            {2,2,3},
+            {4,5,6},
+            {7,8,9}
         });
 
         Matriz matriz_teste_ident = new Matriz(new double[][] {
@@ -26,9 +26,10 @@ public class App {
             {0,0,1}
         });
 
-        matriz_teste1.inverter(matriz_teste2.matriz);
+        matriz_teste2.print(matriz_teste2.matriz);
 
-        System.out.println("a" + matriz_teste1.determinante);
+        System.out.println(
+        matriz_teste2.determinante);
 
         //Matriz mZero = new Matriz(matriz_teste_zero);
 
