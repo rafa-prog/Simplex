@@ -3,7 +3,7 @@ public class Matriz {
     double[][] matriz;
 	double[][] inversa;
     double[][] identidade;
-	double[][] l, u;
+	DecompLU dLU;
 
     public Matriz(double[][] matriz) {
         this.matriz = matriz;
@@ -14,47 +14,10 @@ public class Matriz {
 		for (int i = 0; i < matriz.length; i++) {
 			identidade[i][i] = 1;
 		}
-
-		inversa = null;
     }
 
-
-	public void print(double[][] test) {
-		for(double[] linha : test) {
-
-			System.out.print("[ ");
-
-			for(double valor : linha) {
-				if (valor >= 0) {
-					System.out.print(" ");
-				}
-				
-				System.out.print(valor + " ");
-			}
-
-			System.out.println("] ");
-		}
-
-		System.out.println();
-	}
-
-	private boolean equals(double[][] matriz1, double[][] matriz2) {
-		if (matriz1.length != matriz2.length) {
-			throw new ArithmeticException("Tamanho diferente entre matrizes!");
-		}
-
-		for (int i = 0; i < matriz1.length; i++) {
-			for (int j = 0; j < matriz1[i].length; j++) {
-				if (matriz1[i][j] != matriz2[i][j]) {
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
 	
-    private double det(double[][] matriz) {
+    public double det(double[][] matriz) {
 		double[][] mat_temp;
 		double resultado = 0;
 
@@ -63,8 +26,9 @@ public class Matriz {
 			return resultado;
 		}
 
-		if (matriz.length == 2)
+		if (matriz.length == 2) {
 			return matriz[0][0] * matriz[1][1] - matriz[0][1] * matriz[1][0];
+		}
 
 		for (int i = 0; i < matriz.length; i++) {
 			mat_temp = new double[matriz.length - 1][matriz.length - 1];
@@ -101,49 +65,26 @@ public class Matriz {
 		return mat_result;
 	}
 
-	public void decompLU(double[][] matriz) {
-		l = new double[matriz.length][matriz.length];
-		u = new double[matriz.length][matriz.length];
-
-        for (int i = 0; i < matriz.length; i++) {
-            l[i][i] = 1;
-			
-			for (int j = 0; j < matriz.length; j++) {
-				for (int k = 0; k < matriz.length; k++) {
-					if (i == 0) {
-						u[i][j] = matriz[i][j];
-					}
-
-					if (j == 0) {
-						
-					}
-					
-				}
-			}
-        }
-
-		print(l);
-		print(u);
-		print(multiplicaMat(l, u));
-	}
-
-    public double[][] inverteMat(double[][] teste) {
-		System.out.println("det? " + determinante);
+    public void inverteMat() {
 		if (determinante == 0) {
             throw new ArithmeticException("Matriz singular!");
         }
 
 		inversa = new double[matriz.length][matriz.length];
+		dLU = new DecompLU(matriz);
 
-		int it = 5;
+		for (int i = 0; i < identidade.length; i++) {
+			double[] b = new double[identidade.length];
 
-		this.inversa = identidade;
+			for (int j = 0; j < identidade.length; j++) {
+				b[j] = identidade[j][i];
+			}
 
-		while (!equals(matriz, identidade) && it > 0) {
-			
-			it--;
+			double[] aux = dLU.resolveSistema(b);
+
+			for (int j = 0; j < identidade.length; j++) {
+				inversa[j][i] = aux[j];
+			}
 		}
-
-		return inversa;
     }
 }
