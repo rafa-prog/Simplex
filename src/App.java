@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import utils.Aux;
+
 public class App {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
@@ -12,17 +14,11 @@ public class App {
             {1,0,2}
         };
 
-        Matriz m1 = new Matriz(matriz_teste1);
-
-
         double[][] matriz_teste2 = new double[][] {
             {2,2,3},
             {4,5,6},
             {7,8,9}
         };
-        
-        Matriz m2 = new Matriz(matriz_teste2);
-
 
         double[][] matriz_teste3 = new double[][] {
             {0,2,4},
@@ -30,8 +26,34 @@ public class App {
             {1,0,4}
         };
 
-        Matriz m3 = new Matriz(matriz_teste3);
+        double[][] matriz_teste4 = new double[][] {
+            {2,2,3},
+            {4,4,2},
+            {0,5,5}
+        };
+
+        Matriz m = new Matriz(matriz_teste4);
+
+        m.inverteMatriz(matriz_teste4);
         */
+
+        double[][] matriz_teste4 = new double[][] {
+            {2,2,3},
+            {4,4,2},
+            {0,5,5}
+        };
+
+        Matriz m = new Matriz(matriz_teste4);
+
+        m.inverteMatriz(matriz_teste4);
+
+        m.det(m.inversa);
+
+        double[][] teste = Aux.multiplicaMatrizes(m.dLU.l, m.dLU.u);
+
+        Aux.print("L * U:", teste);
+
+
         System.out.println("Digite o tamanho da matriz: \n>>");
         int tam = scanner.nextInt();  // User input
 
@@ -53,7 +75,7 @@ public class App {
         System.out.println("det(A) = " + A.determinante + "\n\n");
         A.inverteMatriz(matriz);
 
-        A.print("A:",matriz);
+        Aux.print("A:",matriz);
 
         A.det(matriz);
 

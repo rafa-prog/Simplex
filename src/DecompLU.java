@@ -1,3 +1,5 @@
+import utils.Aux;
+
 public class DecompLU {
     double[][] l;
 	double[][] u;
@@ -5,6 +7,14 @@ public class DecompLU {
     public DecompLU(double[][] matriz) {
         l = new double[matriz.length][matriz.length];
         u = new double[matriz.length][matriz.length];
+
+        for (int i = 0; i < matriz.length; i++) {
+            l[i][i] = 1;
+            for (int j = 0; j < matriz.length; j++) {
+                
+                u[i][j] = matriz[i][j];
+            }
+        }
 
         for (int i = 0; i < matriz.length; i++) {
             // U
@@ -16,13 +26,20 @@ public class DecompLU {
 				}
  
                 u[i][k] = matriz[i][k] - soma;
+
+                if (u[i][i] == 0) {
+                    System.out.println("hey ya");
+                    matriz = Aux.trocaLinhasMatriz(matriz, i, 1);
+                    i = 0;
+                }
             }
+
+
+            Aux.print("U:", u);
  
             // L
             for (int k = i; k < matriz.length; k++) {
-                if (i == k) {
-                    l[i][i] = 1;
-				}else {
+                if (i != k) {
                     double soma = 0;
                     for (int j = 0; j < i; j++) {
                         soma += (l[k][j] * u[j][i]);
@@ -31,6 +48,7 @@ public class DecompLU {
                     l[k][i] = (matriz[k][i] - soma) / u[i][i];
                 }
             }
+            Aux.print("L:", l);
         }
     }
 
