@@ -7,17 +7,19 @@ public class DecompLU {
         u = new double[matriz.length][matriz.length];
 
         for (int i = 0; i < matriz.length; i++) {
-            for (int k = i; k < matriz.length; k++) { // U
+            // U
+            for (int k = i; k < matriz.length; k++) {
                 double soma = 0;
 
                 for (int j = 0; j < i; j++) {
-					soma += (l[i][j] * u[j][k]);
+					soma += l[i][j] * u[j][k];
 				}
  
                 u[i][k] = matriz[i][k] - soma;
             }
  
-            for (int k = i; k < matriz.length; k++) { // L
+            // L
+            for (int k = i; k < matriz.length; k++) {
                 if (i == k) {
                     l[i][i] = 1;
 				}else {
@@ -30,8 +32,6 @@ public class DecompLU {
                 }
             }
         }
-
-        
     }
 
     public double[] resolveSistema(double[] b) {
@@ -40,8 +40,10 @@ public class DecompLU {
 
 		int i, j;
 
+        // Ly = b
         for (i = 0; i < b.length; i++) {
             double soma = 0;
+
             for(j = 0; j <= i - 1; j++) {
                 soma += l[i][j] * y[j];
             }
@@ -49,8 +51,10 @@ public class DecompLU {
             y[j] = b[i] - soma;
         }
 
+        // Ux = y
         for (i = b.length - 1; i >= 0; i--) {
             double soma = 0;
+            
             for(j = i + 1; j < b.length; j++) {
                 soma += u[i][j] * x[j];
             }
