@@ -35,26 +35,15 @@ public class App {
         Matriz m = new Matriz(matriz_teste4);
 
         m.inverteMatriz(matriz_teste4);
-        */
-
-        double[][] matriz_teste4 = new double[][] {
-            {2,2,3},
-            {4,4,2},
-            {0,5,5}
-        };
-
-        Matriz m = new Matriz(matriz_teste4);
-
-        m.inverteMatriz(matriz_teste4);
-
-        m.det(m.inversa);
 
         double[][] teste = Aux.multiplicaMatrizes(m.dLU.l, m.dLU.u);
 
         Aux.print("L * U:", teste);
 
+        System.out.println(Aux.compararMatrizes(teste, matriz_teste4));
+        */
 
-        System.out.println("Digite o tamanho da matriz: \n>>");
+        System.out.print("Digite o tamanho da matriz: \n>> ");
         int tam = scanner.nextInt();  // User input
 
         double[][] matriz = new double[tam][tam]; // Alocando espaço
@@ -78,6 +67,8 @@ public class App {
         Aux.print("A:",matriz);
 
         A.det(matriz);
+
+        A.inverteMatriz(matriz);
 
         // */
 

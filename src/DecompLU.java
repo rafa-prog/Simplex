@@ -34,9 +34,6 @@ public class DecompLU {
                 }
             }
 
-
-            Aux.print("U:", u);
- 
             // L
             for (int k = i; k < matriz.length; k++) {
                 if (i != k) {
@@ -48,7 +45,6 @@ public class DecompLU {
                     l[k][i] = (matriz[k][i] - soma) / u[i][i];
                 }
             }
-            Aux.print("L:", l);
         }
     }
 
@@ -82,6 +78,4 @@ public class DecompLU {
 
         return x;
     }
-
-        
 }
