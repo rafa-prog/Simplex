@@ -1,7 +1,7 @@
 package utils;
 
-public class Aux {
-	public static void print (String txt, double[][] matriz) {
+public interface Aux {
+	public static void printMatriz (String txt, double[][] matriz) {
 
 		System.out.println(txt);
 
@@ -24,6 +24,18 @@ public class Aux {
 	}
 
 
+	public static void printVetor (String txt, double[] vetor) {
+
+		System.out.println(txt);
+
+		for(double valor : vetor) {
+			System.out.println("[ " + valor + " ]");
+		}
+
+		System.out.println();
+	}
+
+
 	public static int fat (int num) {
 		int result = num;
         if (num > 1) {
@@ -33,13 +45,23 @@ public class Aux {
     }
 
 
+	public static double compararSinal(double num, char simbolo) {
+		if(simbolo == '>') {
+			num = num * (-1);
+        } else {
+			
+		}
+		return num;
+	}
+
+
     public static boolean compararMatrizes(double[][] matriz1, double[][] matriz2) {
 		if (matriz1.length != matriz2.length) {
 			throw new ArithmeticException("Tamanho diferente entre matrizes!");
 		}
 
 		for (int i = 0; i < matriz1.length; i++) {
-			for (int j = 0; j < matriz1[i].length; j++) {
+			for (int j = 0; j < matriz1.length; j++) {
 				if (matriz1[i][j] != matriz2[i][j]) {
 					return false;
 				}
@@ -89,12 +111,14 @@ public class Aux {
 
 		for (int i = 0; i < matriz.length; i++) {
 			if (matriz[i][linha] != 0 && matriz[linha][i] != 0 && i != linha) {
-				if (linha > 0 && matriz[i][linha] == matriz[i][linha - 1]) {
+				if (i != linha) {
 					continue;
 				}
+				
 				double aux;
 				troca = i;
-				for (int j = 0; j < matriz.length; j++) {
+
+				for (int j = 0; j < matriz[0].length; j++) {
 					aux = matriz[i][j];
 					matriz[i][j] = matriz[linha][j];
 					matriz[linha][j] = aux;
@@ -102,7 +126,7 @@ public class Aux {
 			}
 		}
 
-		print("L" + (linha + 1) + " <-> L" + (troca + 1), matriz);
+		printMatriz("L" + (linha + 1) + " <-> L" + (troca + 1), matriz);
 
 		// Confere se precisa de mais trocas
 		verifPivo(matriz, it);

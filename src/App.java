@@ -43,6 +43,29 @@ public class App {
         System.out.println(Aux.compararMatrizes(teste, matriz_teste4));
         */
 
+        double[][] matriz_teste1 = new double[][] {
+            {1,2,3},
+            {0,1,0},
+            {1,0,2}
+        };
+
+        double[] simbolos ;//= new double[matriz_teste1.length];
+        /*
+        for (int i = 0; i < 3; i++) {
+            char aux = scanner.nextLine().charAt(0);
+            if (aux == '<') {
+                simbolos[i]++;
+            }else if (aux == '>') {
+                simbolos[i]--;
+            }
+        }
+        */
+
+        simbolos = new double[]{1,1,1};
+
+        Simplex s = new Simplex(matriz_teste1, simbolos);
+        /*
+
         System.out.print("Digite o tamanho da matriz: \n>> ");
         int tam = scanner.nextInt();  // User input
 
@@ -64,7 +87,7 @@ public class App {
         System.out.println("det(A) = " + A.determinante + "\n\n");
         A.inverteMatriz(matriz);
 
-        Aux.print("A:",matriz);
+        Aux.printMatriz("A:",matriz);
 
         A.det(matriz);
 

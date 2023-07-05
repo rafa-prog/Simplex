@@ -28,7 +28,6 @@ public class DecompLU {
                 u[i][k] = matriz[i][k] - soma;
 
                 if (u[i][i] == 0) {
-                    System.out.println("hey ya");
                     matriz = Aux.trocaLinhasMatriz(matriz, i, 1);
                     i = 0;
                 }

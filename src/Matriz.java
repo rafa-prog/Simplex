@@ -1,31 +1,14 @@
 import utils.Aux;
 
 public class Matriz {
-	double determinante;
-	double[][] inversa;
-    double[][] identidade;
-	DecompLU dLU;
-
-    public Matriz (double[][] matriz) {
-        determinante = det(matriz);
-
-		Aux.print("A:", matriz);
-
-		identidade = new double[matriz.length][matriz.length];
-
-		for (int i = 0; i < matriz.length; i++) {
-			identidade[i][i] = 1;
-		}
-    }
-
 	
     public double det (double[][] matriz) {
 		double[][] mat_temp;
-		double resultado = 0;
+		double determinante = 0;
 
 		if (matriz.length == 1) {
-			resultado = matriz[0][0];
-			return resultado;
+			determinante = matriz[0][0];
+			return determinante;
 		}
 
 		if (matriz.length == 2) {
@@ -34,8 +17,8 @@ public class Matriz {
 		
 
 		for (int i = 0; i < matriz.length; i++) {
-			mat_temp = new double[matriz.length - 1][matriz.length - 1];
-			for (int j = 1; j < matriz.length; j++) {
+			mat_temp = new double[matriz.length - 1][matriz[0].length - 1];
+			for (int j = 1; j < matriz[0].length; j++) {
 				for (int k = 0; k < matriz.length; k++) {
 					if (k < i) {
 						mat_temp[j - 1][k] = matriz[j][k];
@@ -45,40 +28,60 @@ public class Matriz {
 				}
 			}
 
-			resultado += matriz[0][i] * Math.pow (-1, i) * det(mat_temp);
+			determinante += matriz[0][i] * Math.pow (-1, i) * det(mat_temp);
 		}
 
-		System.out.println("det = " + resultado + "\n\n");
-		return resultado;
+		System.out.println("det = " + determinante + "\n\n");
+		return determinante;
 	}
 
-    public void inverteMatriz(double[][] matriz) {
+	public double[][] identidade (double[][] matriz) {
+		double[][] identidade = new double[matriz.length][matriz[0].length];
+
+		for (int i = 0; i < matriz.length; i++) {
+			identidade[i][i] = 1;
+		}
+
+		return identidade;
+	}
+
+	public double[][] transposta(double[][] matriz) {
+		double[][] transposta = new double[matriz.length][matriz[0].length];
+
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz[0].length; j++) {
+				transposta[j][i] = matriz[i][j];
+			}
+		}
+		return transposta;
+	}
+
+    public double[][] inversa(double[][] matriz) {
 		// Tratamento para matriz singular
-		if (determinante == 0) {
+		if (det(matriz) == 0) {
             throw new ArithmeticException("Matriz singular!");
         }
 
-		// Tratamento para elemento da diagonal principal nulo
-		//matriz = Aux.verifPivo(matriz, 0);
+		double[][] inversa = new double[matriz.length][matriz[0].length];
+		double[][] identidade = identidade(matriz);
 
-		inversa = new double[matriz.length][matriz.length];
-		dLU = new DecompLU(matriz);
+		DecompLU dLU = new DecompLU(matriz);
 
 		// Resolve LUx = b
 		for (int i = 0; i < identidade.length; i++) {
-			double[] b = new double[identidade.length];
-
-			for (int j = 0; j < identidade.length; j++) {
+			double[] b = new double[identidade[0].length];
+			
+			for (int j = 0; j < identidade[0].length; j++) {
 				b[j] = identidade[j][i];
 			}
 
 			double[] aux = dLU.resolveSistema(b);
 
-			for (int j = 0; j < identidade.length; j++) {
+			for (int j = 0; j < identidade[0].length; j++) {
 				inversa[j][i] = aux[j];
 			}
 		}
 
-		Aux.print("A⁻¹:", inversa);
+		return inversa;
     }
 }
