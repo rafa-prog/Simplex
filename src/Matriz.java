@@ -31,7 +31,6 @@ public class Matriz {
 			determinante += matriz[0][i] * Math.pow (-1, i) * det(mat_temp);
 		}
 
-		System.out.println("det = " + determinante + "\n\n");
 		return determinante;
 	}
 

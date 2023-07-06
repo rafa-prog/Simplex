@@ -13,8 +13,9 @@ public interface Aux {
 				if (valor >= 0) {
 					System.out.print(" ");
 				}
-				
+
 				System.out.print(valor + " ");
+				
 			}
 
 			System.out.println("] ");

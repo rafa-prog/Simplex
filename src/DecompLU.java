@@ -11,7 +11,7 @@ public class DecompLU {
         for (int i = 0; i < matriz.length; i++) {
             l[i][i] = 1;
             for (int j = 0; j < matriz.length; j++) {
-                
+                 
                 u[i][j] = matriz[i][j];
             }
         }
