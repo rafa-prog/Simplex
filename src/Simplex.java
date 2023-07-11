@@ -14,7 +14,7 @@ public class Simplex {
         cR = resolver(cB, matriz, simbolos, 1);
     }
 
-    private void setTest(Matriz m) {
+    private void trocaColunas(Matriz m) {
         double[][] BN = new double[B.length][B[0].length + N[0].length];
 
         for (int i = 0; i < BN.length; i++) {
@@ -78,7 +78,7 @@ public class Simplex {
             N[i][i] = simbolos[i];
         }
 
-        setTest(m);
+        trocaColunas(m);
 
         BInversa = m.inversa(B);
         Aux.print("A:", matriz);
@@ -89,7 +89,7 @@ public class Simplex {
         Aux.print("B⁻¹:", BInversa);
         
 
-        double[] xChapeu = Aux.multiplicar(b, BInversa);// BInversa[i][j] * b[j];
+        double[] xChapeu =  Aux.concatenarVetores(Aux.multiplicar(b, BInversa), new double[]{0,0});// BInversa[i][j] * b[j];
         Aux.print("xChapeu", xChapeu);
 
         for (int i = 0; i < B.length; i++) {
@@ -102,18 +102,15 @@ public class Simplex {
         Aux.print("lambda", lambda_t);
 
 
+        System.out.println("nl: " + N[0].length + "a: " + N.length);
+
         int k = -1;
-        double[] y = ;
+        double[] y = new double[N[0].length];
+        double[] teste = Aux.multiplicar(lambda_t, N);
         
 
         for (int i = 0; i < y.length; i++) {
-            double res = 0;
-
-            for (int j = 0; j < matriz.length; j++) {
-                res += lambda_t[j] * N[j][i];
-            }
-
-            y[i] = xChapeu[i + tamN] - res;
+            y[i] = xChapeu[i + tamN] - teste[i];
             
             if (y[i] < 0) {
                 k = i;

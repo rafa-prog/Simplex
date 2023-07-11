@@ -7,7 +7,7 @@ public interface Aux {
 		System.out.println(txt);
 
 		for(double[] linha : matriz) {
-			print("", linha);
+			print("$", linha);
 		}
 
 		System.out.println();
@@ -16,7 +16,7 @@ public interface Aux {
 
 	public static void print (String txt, double[] vetor) {
 
-		if(txt != "") {
+		if(txt != "$") {
 			System.out.println(txt);
 		}
 
@@ -26,26 +26,43 @@ public interface Aux {
 			if (valor >= 0) {
 				System.out.print(" ");
 			}
-
-			System.out.print(valor + " ");
+			
+			if (valor == 0) {
+				System.out.print("0.0 ");
+			} else {
+				System.out.print(valor + " ");
+			}
 		}
 
 		System.out.println(" ]");
 
-		if(txt != "") {
+		if(txt != "$") {
 			System.out.println();
 		}
 	}
 
 
 	public static int fat (int num) {
-		int result = num;
+		int res = num;
         if (num > 1) {
-            return result * fat(num - 1);
+            return res * fat(num - 1);
         }
-		return result;
+		return res;
     }
 
+
+	public static double[] concatenarVetores(double[] vetor1, double[] vetor2) {
+		double[] res = new double[vetor1.length + vetor2.length];
+
+		for (int i = 0; i < res.length; i++) {
+			if(i < vetor1.length) {
+				res[i] = vetor1[i];
+			}else {
+				res[i] = vetor2[i - vetor1.length];
+			}
+		}
+		return res;
+	}
 
 	public static boolean compararMatrizes(double[][] matriz1, double[][] matriz2) {
 		if (matriz1.length != matriz2.length) {
@@ -69,30 +86,30 @@ public interface Aux {
 			throw new ArithmeticException("Tamanho diferente entre vetores!");
 		}
 
-		double result = 0;
+		double res = 0;
 
 		for (int i = 0; i < vetor1.length; i++) {
-			result += vetor1[i] * vetor2[i];
+			res += vetor1[i] * vetor2[i];
 		}
 
-		return result;
+		return res;
 	}
 
 	
 	public static double[] multiplicar (double[] vetor, double[][] matriz) {
-		if(vetor.length != matriz[0].length) {
+		if(vetor.length != matriz.length) {
 			throw new ArithmeticException("Tamanho diferente entre vetor e matriz!");
 		}
 
-		double[] result = new double[vetor.length];
+		double[] res = new double[vetor.length];
 
-		for (int i = 0; i < vetor.length; i++) {
-			for (int j = 0; j < matriz[0].length; j++) {
-				result[i] += vetor[j] * matriz[j][i];
+		for (int i = 0; i < matriz[0].length; i++) {
+			for (int j = 0; j < vetor.length; j++) {
+				res[i] += vetor[j] * matriz[j][i];
 			}
 		}
 
-		return result;
+		return res;
 	}
 
 
@@ -101,17 +118,17 @@ public interface Aux {
 			throw new ArithmeticException("Tamanho diferente entre matrizes!");
 		}
 
-		double[][] mat_result = new double[matriz1.length][matriz1.length];
+		double[][] res = new double[matriz1.length][matriz1.length];
 		
 		for (int i = 0; i < matriz1.length; i++) {
 			for (int k = 0; k < matriz1.length; k++) {
 				for (int j = 0; j < matriz1.length; j++) {
-					mat_result[i][j] += matriz1[i][k] * matriz2[k][j];
+					res[i][j] += matriz1[i][k] * matriz2[k][j];
 				}
 			}
 		}
 
-		return mat_result;
+		return res;
 	}
 
 
