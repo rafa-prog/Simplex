@@ -1,39 +1,40 @@
 package utils;
 
 public interface Aux {
-	public static void printMatriz (String txt, double[][] matriz) {
+
+	public static void print (String txt, double[][] matriz) {
 
 		System.out.println(txt);
 
 		for(double[] linha : matriz) {
-
-			System.out.print("[ ");
-
-			for(double valor : linha) {
-				if (valor >= 0) {
-					System.out.print(" ");
-				}
-
-				System.out.print(valor + " ");
-				
-			}
-
-			System.out.println("] ");
+			print("", linha);
 		}
 
 		System.out.println();
 	}
 
 
-	public static void printVetor (String txt, double[] vetor) {
+	public static void print (String txt, double[] vetor) {
 
-		System.out.println(txt);
-
-		for(double valor : vetor) {
-			System.out.println("[ " + valor + " ]");
+		if(txt != "") {
+			System.out.println(txt);
 		}
 
-		System.out.println();
+		System.out.print("[ ");
+
+		for(double valor : vetor) {
+			if (valor >= 0) {
+				System.out.print(" ");
+			}
+
+			System.out.print(valor + " ");
+		}
+
+		System.out.println(" ]");
+
+		if(txt != "") {
+			System.out.println();
+		}
 	}
 
 
@@ -46,17 +47,7 @@ public interface Aux {
     }
 
 
-	public static double compararSinal(double num, char simbolo) {
-		if(simbolo == '>') {
-			num = num * (-1);
-        } else {
-			
-		}
-		return num;
-	}
-
-
-    public static boolean compararMatrizes(double[][] matriz1, double[][] matriz2) {
+	public static boolean compararMatrizes(double[][] matriz1, double[][] matriz2) {
 		if (matriz1.length != matriz2.length) {
 			throw new ArithmeticException("Tamanho diferente entre matrizes!");
 		}
@@ -71,10 +62,42 @@ public interface Aux {
 
 		return true;
 	}
+	
+
+	public static double multiplicar(double[] vetor1, double[] vetor2) {
+		if(vetor1.length != vetor2.length) {
+			throw new ArithmeticException("Tamanho diferente entre vetores!");
+		}
+
+		double result = 0;
+
+		for (int i = 0; i < vetor1.length; i++) {
+			result += vetor1[i] * vetor2[i];
+		}
+
+		return result;
+	}
+
+	
+	public static double[] multiplicar (double[] vetor, double[][] matriz) {
+		if(vetor.length != matriz[0].length) {
+			throw new ArithmeticException("Tamanho diferente entre vetor e matriz!");
+		}
+
+		double[] result = new double[vetor.length];
+
+		for (int i = 0; i < vetor.length; i++) {
+			for (int j = 0; j < matriz[0].length; j++) {
+				result[i] += vetor[j] * matriz[j][i];
+			}
+		}
+
+		return result;
+	}
 
 
-	public static double[][] multiplicaMatrizes (double[][] matriz1, double[][] matriz2) {
-		if (matriz1.length != matriz2.length) {
+	public static double[][] multiplicar (double[][] matriz1, double[][] matriz2) {
+		if (matriz1.length != matriz2[0].length) {
 			throw new ArithmeticException("Tamanho diferente entre matrizes!");
 		}
 
@@ -92,7 +115,7 @@ public interface Aux {
 	}
 
 
-	public static double[][] verifPivo (double[][] matriz, int it) {
+	public static double[][] verifPivoNulo (double[][] matriz, int it) {
 		for (int i = 0; i < matriz.length; i++) {
 			if (matriz[i][i] == 0) {
 				matriz = trocaLinhasMatriz(matriz, i, it++);
@@ -127,10 +150,22 @@ public interface Aux {
 			}
 		}
 
-		printMatriz("L" + (linha + 1) + " <-> L" + (troca + 1), matriz);
+		print("L" + (linha + 1) + " <-> L" + (troca + 1), matriz);
 
 		// Confere se precisa de mais trocas
-		verifPivo(matriz, it);
+		verifPivoNulo(matriz, it);
+
+		return matriz;
+	}
+
+
+	public static double[][] trocaCol(double[][] matriz, int colInicial, int colFinal) {
+
+		for (int i = 0; i < matriz.length; i++) {
+			double aux = matriz[i][colInicial - 1];
+			matriz[i][colInicial - 1] = matriz[i][colFinal - 1];
+			matriz[i][colFinal - 1] = aux;
+		}
 
 		return matriz;
 	}

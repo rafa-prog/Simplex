@@ -56,12 +56,12 @@ public class App {
         };
 
         double[][] matriz_teste3 = new double[][] {
-            {2,2,3},
-            {4,5,6},
-            {7,8,9}
+            {1,0,0},
+            {0,1,0},
+            {0,0,1}
         };
 
-        double[] simbolos ;//= new double[matriz_teste1.length];
+        double[] simbolos = new double[matriz_teste1.length];
 
         /*
         for (int i = 0; i < 3; i++) {
@@ -74,9 +74,9 @@ public class App {
         }
         // */
 
-        simbolos = new double[]{1,1,-1};
+        simbolos = new double[]{1,1,1};
 
-        Simplex s = new Simplex(new double[] {-2, -1, 0}, matriz_teste1, simbolos);
+        Simplex s = new Simplex(new double[] {-2, -1, 0}, matriz_teste2, simbolos);
         /*
 
         System.out.print("Digite o tamanho da matriz: \n>> ");

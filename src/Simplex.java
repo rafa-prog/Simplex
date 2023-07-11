@@ -3,14 +3,51 @@ import utils.Aux;
 public class Simplex {
     boolean max;
     int tamN;
-    int[] index;
-    double[] cB, b;
+    double[] cB, cR, b;
     double[][] B, BInversa, N;
 
     public Simplex(double[] cB, double[][] matriz, double[] simbolos) {
+
         max = false;
         tamN = 0;
 
+        cR = resolver(cB, matriz, simbolos, 1);
+    }
+
+    private void setTest(Matriz m) {
+        double[][] BN = new double[B.length][B[0].length + N[0].length];
+
+        for (int i = 0; i < BN.length; i++) {
+            for (int j = 0; j < BN[0].length; j++) {
+                if (j < B.length) {
+                    BN[i][j] = B[i][j];
+                    
+                }else {
+                    BN[i][j] = N[i][j - B.length];
+                }
+            }
+        }
+
+        BN = Aux.trocaCol(BN, 3, 5);
+
+        for (int i = 0; i < BN.length; i++) {
+            for (int j = 0; j < BN[0].length; j++) {
+                if (j < B.length) {
+                    B[i][j] = BN[i][j];
+                    
+                }else {
+                    N[i][j - B.length] = BN[i][j];
+                }
+            }
+        }
+    }
+
+    private void procede(double[] y) {
+        System.out.println("procede a dar errado");
+    }
+
+    private double[] resolver(double[] cB, double[][] matriz, double[] simbolos, int it) {
+        double[] result = new double[cB.length];
         Matriz m = new Matriz();
 
         //this.cB = cB;
@@ -18,12 +55,6 @@ public class Simplex {
         for (int i = 0; i < simbolos.length; i++) {
             if(simbolos[i] != 0)
                 tamN++;
-        }
-
-        index = new int[matriz.length + matriz.length - 1];
-
-        for (int i = 0; i < index.length; i++) {
-            index[i] = i + 1;
         }
 
         B = new double[matriz.length][matriz[0].length];
@@ -40,49 +71,40 @@ public class Simplex {
             }
         }
 
-        //B[matriz.length - 1][matriz.length - 1] = simbolos[0]; // DEF [x1 x2 x5]
-        
-        B[0][matriz.length - 1] = simbolos[0]; // DEF [x1 x2 x3]
+        B[matriz.length - 1][matriz.length - 1] = simbolos[simbolos.length - 1]; // DEF [x1 x2 xn]
 
-        // DEF [x4 xi] 
-        for (int i = 1; i <= N[0].length; i++) {
-            N[i][i - 1] = simbolos[i];
+        // DEF [x3 xi (i < n)] 
+        for (int i = 0; i < N[0].length; i++) {
+            N[i][i] = simbolos[i];
         }
+
+        setTest(m);
 
         BInversa = m.inversa(B);
-        Aux.printMatriz("A:", matriz);
-        Aux.printMatriz("B:", B);
-        Aux.printMatriz("N:", N);
-        Aux.printVetor("b:", b);
-        Aux.printVetor("cB", cB);
-        Aux.printMatriz("B⁻¹:", BInversa);
+        Aux.print("A:", matriz);
+        Aux.print("B:", B);
+        Aux.print("N:", N);
+        Aux.print("b:", b);
+        Aux.print("cB", cB);
+        Aux.print("B⁻¹:", BInversa);
         
 
-        double[] xChapeu = new double[B.length + tamN - 1];
+        double[] xChapeu = Aux.multiplicar(b, BInversa);// BInversa[i][j] * b[j];
+        Aux.print("xChapeu", xChapeu);
 
         for (int i = 0; i < B.length; i++) {
-            for (int j = 0; j < B.length; j++) {
-                xChapeu[i] += BInversa[i][j] * b[j];
-            }
-
             if (xChapeu[i] < 0) {
-                throw new RuntimeException("Sistema Ax = b fere a condição de não-negatividade");
+                //throw new RuntimeException("Sistema Ax = b fere a condição de não-negatividade");
             }
         }
 
-        Aux.printVetor("xChapeu", xChapeu);
+        double[] lambda_t = Aux.multiplicar(cB, BInversa);
+        Aux.print("lambda", lambda_t);
 
-        double[] lambda_t = new double[B.length];
 
-        for (int i = 0; i < B.length; i++) {
-            for (int j = 0; j < lambda_t.length; j++) {
-                lambda_t[i] += cB[j] * BInversa[j][i];
-            }
-        }
-
-        Aux.printVetor("lambda", lambda_t);
-
-        double[] y = new double[tamN - 1];
+        int k = -1;
+        double[] y = ;
+        
 
         for (int i = 0; i < y.length; i++) {
             double res = 0;
@@ -94,17 +116,13 @@ public class Simplex {
             y[i] = xChapeu[i + tamN] - res;
             
             if (y[i] < 0) {
-                System.out.println("fudeo");
+                k = i;
+                procede(y);
             }
         }
 
-        
+        Aux.print("y:", y);
 
-        Aux.printVetor("y:", y);
-    }
-
-    private double[] resolver() {
-        double[] a = null;
-        return a;
+        return result;
     }
 }
