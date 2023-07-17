@@ -3,63 +3,31 @@ import utils.Aux;
 public class Simplex {
     boolean max;
     int tamN;
-    double[] cB, cR, b;
-    double[][] B, BInversa, N;
+    double[] cB, cR, b, n, xChapeu;
+    double[][] B, N, BInversa; 
 
-    public Simplex(double[] cB, double[][] matriz, double[] simbolos) {
+    public Simplex(boolean max, double[] cB, double[][] matriz, double[] simbolos) {
+        this.cB = cB;
 
-        max = false;
+        if(max) {
+            for (int i = 0; i < cB.length; i++) {
+                cB[i] = cB[i] * (-1);
+            }
+        }
+
         tamN = 0;
 
-        cR = resolver(cB, matriz, simbolos, 1);
-    }
-
-    private void trocaColunas(Matriz m) {
-        double[][] BN = new double[B.length][B[0].length + N[0].length];
-
-        for (int i = 0; i < BN.length; i++) {
-            for (int j = 0; j < BN[0].length; j++) {
-                if (j < B.length) {
-                    BN[i][j] = B[i][j];
-                    
-                }else {
-                    BN[i][j] = N[i][j - B.length];
-                }
-            }
-        }
-
-        BN = Aux.trocaCol(BN, 3, 5);
-
-        for (int i = 0; i < BN.length; i++) {
-            for (int j = 0; j < BN[0].length; j++) {
-                if (j < B.length) {
-                    B[i][j] = BN[i][j];
-                    
-                }else {
-                    N[i][j - B.length] = BN[i][j];
-                }
-            }
-        }
-    }
-
-    private void procede(double[] y) {
-        System.out.println("procede a dar errado");
-    }
-
-    private double[] resolver(double[] cB, double[][] matriz, double[] simbolos, int it) {
-        double[] result = new double[cB.length];
-        Matriz m = new Matriz();
-
-        //this.cB = cB;
-
         for (int i = 0; i < simbolos.length; i++) {
-            if(simbolos[i] != 0)
+            if (simbolos[i] != 0) {
                 tamN++;
+            }
         }
 
         B = new double[matriz.length][matriz[0].length];
         N = new double[matriz.length][matriz[0].length - 1];
+
         b = new double[matriz.length];
+        n = new double[matriz.length - 1];
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
@@ -78,18 +46,54 @@ public class Simplex {
             N[i][i] = simbolos[i];
         }
 
-        trocaColunas(m);
+        cR = resolver(cB, simbolos, 1);
+    }
 
+    private void trocaColunas(int col1, int col2) {
+        double[][] BN = new double[B.length][B[0].length + N[0].length];
+
+        for (int i = 0; i < BN.length; i++) {
+            for (int j = 0; j < BN[0].length; j++) {
+                if (j < B.length) {
+                    BN[i][j] = B[i][j];
+                    
+                }else {
+                    BN[i][j] = N[i][j - B.length];
+                }
+            }
+        }
+
+        BN = Aux.trocaCol(BN, col1, col2);
+
+        for (int i = 0; i < BN.length; i++) {
+            for (int j = 0; j < BN[0].length; j++) {
+                if (j < B.length) {
+                    B[i][j] = BN[i][j];
+                    
+                }else {
+                    N[i][j - B.length] = BN[i][j];
+                }
+            }
+        }
+    }
+
+    private double[] resolver(double[] cB, double[] simbolos, int it) {
+        System.out.println("teste " + it);
+
+        trocaColunas(2, 4);
+
+        Matriz m = new Matriz();
         BInversa = m.inversa(B);
-        Aux.print("A:", matriz);
+
         Aux.print("B:", B);
         Aux.print("N:", N);
         Aux.print("b:", b);
+        Aux.print("n:", n);
         Aux.print("cB", cB);
         Aux.print("B⁻¹:", BInversa);
-        
 
-        double[] xChapeu =  Aux.concatenarVetores(Aux.multiplicar(b, BInversa), new double[]{0,0});// BInversa[i][j] * b[j];
+        xChapeu = Aux.concatenarVetores(Aux.multiplicar(b, BInversa), n);// b_chapeu e n_chapeu
+
         Aux.print("xChapeu", xChapeu);
 
         for (int i = 0; i < B.length; i++) {
@@ -101,25 +105,60 @@ public class Simplex {
         double[] lambda_t = Aux.multiplicar(cB, BInversa);
         Aux.print("lambda", lambda_t);
 
-
-        System.out.println("nl: " + N[0].length + "a: " + N.length);
-
-        int k = -1;
+        double[] res = Aux.multiplicar(lambda_t, N);
         double[] y = new double[N[0].length];
-        double[] teste = Aux.multiplicar(lambda_t, N);
-        
+
+        int kMenor = -1;
+        double menor = Double.POSITIVE_INFINITY;
 
         for (int i = 0; i < y.length; i++) {
-            y[i] = xChapeu[i + tamN] - teste[i];
+            y[i] = xChapeu[i + tamN] - res[i];
             
-            if (y[i] < 0) {
-                k = i;
-                procede(y);
+            if (y[i] < menor) {
+                menor = y[i];
+                kMenor = i;
             }
         }
 
-        Aux.print("y:", y);
+        Aux.print("y: ", y);
 
-        return result;
+        double[] direcao = new double[B.length];
+
+        for (int i = 0; i < B.length; i++) {
+            direcao[i] = N[i][kMenor];
+        }
+
+        direcao = Aux.multiplicar(direcao, BInversa); 
+        
+        Aux.print("direcao: ", direcao);
+
+        if (menor < 0) {
+            if (it > Aux.fat(B.length) || it <= 0) {
+			    throw new RuntimeException("Sistema sem solução");
+		    }
+
+            it++;
+
+            double[] tamanho_passo = new double[B.length];
+
+            int kMin = -1;
+            double min = Double.POSITIVE_INFINITY;
+            
+            for (int i = 0; i < tamanho_passo.length; i++) {
+                if (B[i][kMenor] > 0 && direcao[i] != 0 && (xChapeu[i] / direcao[i]) >= 0) {
+                    tamanho_passo[i] = xChapeu[i] / direcao[i];
+                    if (tamanho_passo[i] < min) {
+                        min = tamanho_passo[i];
+                        kMin = i;
+                    }
+                }
+            }
+
+            trocaColunas(kMenor, kMin);
+
+            y = resolver(cB, simbolos, it);
+        }
+
+        return y;
     }
 }

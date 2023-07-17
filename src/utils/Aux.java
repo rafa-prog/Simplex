@@ -51,6 +51,19 @@ public interface Aux {
     }
 
 
+	public static double min(double[] vetor) {
+		double res = 0;
+
+		for (double valor : vetor) {
+			if (valor <= res && valor > 0) {
+				res = valor;
+			}
+		}
+
+		return res;
+	}
+
+
 	public static double[] concatenarVetores(double[] vetor1, double[] vetor2) {
 		double[] res = new double[vetor1.length + vetor2.length];
 
@@ -64,6 +77,7 @@ public interface Aux {
 		return res;
 	}
 
+	
 	public static boolean compararMatrizes(double[][] matriz1, double[][] matriz2) {
 		if (matriz1.length != matriz2.length) {
 			throw new ArithmeticException("Tamanho diferente entre matrizes!");
@@ -179,9 +193,9 @@ public interface Aux {
 	public static double[][] trocaCol(double[][] matriz, int colInicial, int colFinal) {
 
 		for (int i = 0; i < matriz.length; i++) {
-			double aux = matriz[i][colInicial - 1];
-			matriz[i][colInicial - 1] = matriz[i][colFinal - 1];
-			matriz[i][colFinal - 1] = aux;
+			double aux = matriz[i][colInicial];
+			matriz[i][colInicial] = matriz[i][colFinal];
+			matriz[i][colFinal] = aux;
 		}
 
 		return matriz;
