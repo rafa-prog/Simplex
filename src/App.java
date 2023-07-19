@@ -38,30 +38,31 @@ public class App {
         //*/
         //*
         Scanner scanner = new Scanner(System.in);
-        
+        Matriz matriz = new Matriz(); // Funções de matriz
 
-        double[] simbolos, fx;
+        int[] simbolos;
+        double[] fx;
         double[][] A;
 
         System.out.print("Digite o tamanho da matriz: \n>> ");
         int tam = Integer.parseInt(scanner.nextLine());  // User input
         System.out.println();
 
-
         A = new double[tam][tam]; // Alocando espaço
-        simbolos = new double[tam];
+        simbolos = new int[tam];
         fx = new double[tam];
 
+        boolean max = false; // Definindo max e min
+
+        /* 
         System.out.print("(min/max) \n>> ");
         String tipoFuncao = scanner.nextLine();
         System.out.println();
-
-
-        boolean max = false;
- 
+        
         if (tipoFuncao == "max") {
             max = true;
         }
+        */
 
         for (int i = 0; i < A.length; i++) {
             System.out.print("Valor de x" + (i + 1) + "\n>> ");
@@ -90,10 +91,6 @@ public class App {
         }
 
         System.out.println();
-
-
-        // Inicializa A e I, imprime, e calcula det(A)
-        Matriz matriz = new Matriz();
 
         System.out.println("det(A) = " + matriz.det(A) + "\n\n");
         Aux.print("A:", A);

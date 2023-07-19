@@ -6,7 +6,7 @@ public class Simplex {
     double[] cB, cR, b, n, xChapeu;
     double[][] B, N, BInversa; 
 
-    public Simplex(boolean max, double[] cB, double[][] matriz, double[] simbolos) {
+    public Simplex(boolean max, double[] cB, double[][] matriz, int[] simbolos) {
         this.cB = cB;
 
         if(max) {
@@ -46,7 +46,7 @@ public class Simplex {
             N[i][i] = simbolos[i];
         }
 
-        cR = resolver(cB, simbolos, 1);
+        cR = resolver(simbolos, 1);
     }
 
     private void trocaColunas(int col1, int col2) {
@@ -77,10 +77,8 @@ public class Simplex {
         }
     }
 
-    private double[] resolver(double[] cB, double[] simbolos, int it) {
+    private double[] resolver(int[] simbolos, int it) {
         System.out.println("teste " + it);
-
-        trocaColunas(2, 4);
 
         Matriz m = new Matriz();
         BInversa = m.inversa(B);
@@ -156,7 +154,7 @@ public class Simplex {
 
             trocaColunas(kMenor, kMin);
 
-            y = resolver(cB, simbolos, it);
+            y = resolver(simbolos, it);
         }
 
         return y;
