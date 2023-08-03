@@ -1,0 +1,1 @@
+na hora de trocar as colunas, colocar um sistema de trocas iterativo, onde precisa guardar os valores de i e f (provavelmente outro hashset), para banir trocas redundantes e op inválidas
