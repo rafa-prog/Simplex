@@ -64,6 +64,10 @@ public class Matriz {
 		double[][] inversa = new double[matriz.length][matriz[0].length];
 		double[][] identidade = identidade(matriz);
 
+		if(matrizIdentica(matriz, identidade)) {
+			return identidade;
+		}
+
 		DecompLU dLU = new DecompLU(matriz);
 
 		// Resolve LUx = b
@@ -83,4 +87,15 @@ public class Matriz {
 
 		return inversa;
     }
+
+	public boolean matrizIdentica(double[][] matriz1, double[][] matriz2) {
+		for (int i = 0; i < matriz1.length; i++) {
+			for (int j = 0; j < matriz1.length; j++) {
+				if(matriz1[i][j] != matriz2[i][j]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

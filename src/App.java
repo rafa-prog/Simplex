@@ -53,7 +53,7 @@ public class App {
         simbolos = new int[tam];
         fx = new double[tam];
 
-        boolean max = false; // Definindo max e min
+        boolean max = true; // Definindo max e min
 
         /* 
         System.out.print("(min/max) \n>> ");

@@ -47,11 +47,11 @@ public class Simplex {
             }
         }
 
-        B[matriz.length - 1][matriz.length - 1] = simbolos[simbolos.length - 1]; // DEF [x1 x2 xn]
+        B[0][matriz.length - 1] = simbolos[0]; // DEF [x1 x2 x3]
 
-        // DEF [x3 xi (i < n)] 
+        // DEF [x4 xi (i <= n)] 
         for (int i = 0; i < N[0].length; i++) {
-            N[i][i] = simbolos[i];
+            N[i + 1][i] = simbolos[i + 1];
         }
 
         /*
@@ -75,16 +75,29 @@ public class Simplex {
         if(m.det(B) == 0 && trocas.isEmpty()) {
             if(it == 1) {
 
+                gerenciaColunas(B[0].length - 1, B[0].length + N[0].length - 1);
+
                 int col1 = (B[0].length + N[0].length) / 2;
                 int col2 = col1 + 1;
 
                 while(m.det(B) == 0 && it <= Aux.fat(B.length) && it >= 0) {
+                    it++;
+
+                    System.out.println("ata " + col1 + " " + col2);
                     gerenciaColunas(col1, col2);
                     Troca troca = new Troca(col1, col2, null);
                     trocas.add(troca);
 
                     col1 = (col1 - 1) % (B[0].length + N[0].length);
                     col2 = (col2 + 1) % (B[0].length + N[0].length);
+                    
+                    if(col1 < 0) {
+                        col1 = col1 * (-1);
+                    }
+
+                    if(col1 != col2) {
+                        col2 = (col2 + 1) % (B[0].length + N[0].length);
+                    }
                 }
 
                 if (it > Aux.fat(B.length)) {
