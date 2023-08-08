@@ -1,5 +1,8 @@
 package utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface Aux {
 
 	public static void print (String txt, double[][] matriz) {
@@ -39,6 +42,20 @@ public interface Aux {
 		if(txt != "$") {
 			System.out.println();
 		}
+	}
+
+
+	public static List<Integer> listarTroca(int[] index, int pos1, int pos2) {
+		int aux = index[pos1];
+        index[pos1] = index[pos2];
+        index[pos2] = aux;
+
+        List<Integer> indexList = new ArrayList<>();
+        for (int i : index) {
+            indexList.add(i);
+        }
+
+		return indexList;
 	}
 
 
@@ -190,7 +207,7 @@ public interface Aux {
 	}
 
 
-	public static double[][] trocaCol(double[][] matriz, int colInicial, int colFinal) {
+	public static double[][] trocaColunasMatriz(double[][] matriz, int colInicial, int colFinal) {
 
 		for (int i = 0; i < matriz.length; i++) {
 			double aux = matriz[i][colInicial];

@@ -4,6 +4,7 @@ import utils.Aux;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        Scanner scanner = new Scanner(System.in);
         /*
         // Testes manuais
         double[][] m1 = new double[][] {
@@ -37,7 +38,7 @@ public class App {
         };
         //*/
         //*
-        Scanner scanner = new Scanner(System.in);
+        //*
         Matriz matriz = new Matriz(); // Funções de matriz
 
         int[] simbolos;
@@ -63,7 +64,7 @@ public class App {
             max = true;
         }
         */
-
+        //*
         for (int i = 0; i < A.length; i++) {
             System.out.print("Valor de x" + (i + 1) + "\n>> ");
             fx[i] = Double.parseDouble(scanner.nextLine());
@@ -95,7 +96,7 @@ public class App {
         System.out.println("det(A) = " + matriz.det(A) + "\n\n");
         Aux.print("A:", A);
 
-        Simplex s = new Simplex(max, fx, A, simbolos);
+        Simplex s = new Simplex(matriz, max, fx, A, simbolos);
         // */
         scanner.close();
     }
