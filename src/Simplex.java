@@ -35,8 +35,6 @@ public class Simplex {
         b = new double[matriz.length];
         n = new double[matriz.length - 1];
 
-        //listaNegra = new HashSet<>();
-
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
                 if (j < matriz.length - 1) {
@@ -54,13 +52,20 @@ public class Simplex {
             N[i + 1][i] = simbolos[i + 1];
         }
 
-        /*
-        List<Integer> indexList = Aux.listarTroca(index, B[0].length - 1, index.length - 1);
+        boolean negatividadeB = false;
 
-        listaNegra.add(indexList);
+        for(int i = 0; i < b.length; i++) {
+            if(b[i] < 0) {
+                negatividadeB = true;
+                break;
+            }
+        }
 
-        System.out.println(listaNegra);
-        //*/
+        if(negatividadeB) {
+            for (int i = 0; i < b.length; i++) {
+                b[i] = b[i] * (-1);
+            }
+        }
 
         trocas = new ArrayDeque<>();
 
@@ -83,7 +88,7 @@ public class Simplex {
                 while(m.det(B) == 0 && it <= Aux.fat(B.length) && it >= 0) {
                     it++;
 
-                    System.out.println("ata " + col1 + " " + col2);
+                    System.out.println("troca: " + col1 + " " + col2);
                     gerenciaColunas(col1, col2);
                     Troca troca = new Troca(col1, col2, null);
                     trocas.add(troca);
@@ -224,6 +229,8 @@ public class Simplex {
                     if(!trocas.isEmpty()) {
                         Troca verficaTroca = trocas.peekLast();
                         List<Double> valoresProibidos = verficaTroca.getListaNegra();
+
+                        System.out.println(verficaTroca.getListaNegra());
 
                         if(!valoresProibidos.isEmpty()) {
 
